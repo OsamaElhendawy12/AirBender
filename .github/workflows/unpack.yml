@@ -1,0 +1,20 @@
+name: Unpack Slice
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  unpack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          find . -maxdepth 1 ! -name '.' ! -name '.git' ! -name '.github' ! -name 'airbender-slice*.zip' -exec rm -rf {} +
+          unzip -o airbender-slice*.zip
+          rm -f airbender-slice*.zip
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add -A
+          git commit -m "Slice 1: Clean folder structure"
+          git push
+          
